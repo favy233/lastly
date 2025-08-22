@@ -14,90 +14,288 @@ const statusConfig = {
 const initialSuppliesData = [
   {
     id: 1,
-    image: 'https://placehold.co/40x40/E0E0E0/333333?text=T',
-    product: 'T-shirt "Sport"',
-    orderId: 'ORD12345-6789',
-    suppliers: 'Fashion Trends Co.',
+    product: 'MacBook Pro 16"',
+    orderId: 'ORD-1234',
+    suppliers: 'Apple Inc.',
     status: 'In stock',
-    amount: 1800.00,
-    quantity: 532,
-    date: '2024-03-15'
+    amount: 2499.99,
+    quantity: 5,
+    date: '2023-10-15',
+    image: 'https://placehold.co/40x40/3B82F6/FFFFFF?text=MBP'
   },
   {
     id: 2,
-    image: 'https://placehold.co/40x40/E0E0E0/333333?text=J',
-    product: 'Jeans "Slim Fit"',
-    orderId: 'SUP20223-4567',
-    suppliers: 'StyleMakers Apparel',
+    product: 'Dell XPS 15',
+    orderId: 'ORD-5678',
+    suppliers: 'Dell Technologies',
     status: 'Delivered',
-    amount: 5700.00,
-    quantity: 142,
-    date: '2024-03-10'
+    amount: 1899.99,
+    quantity: 3,
+    date: '2023-10-10',
+    image: 'https://placehold.co/40x40/10B981/FFFFFF?text=DXPS'
   },
   {
     id: 3,
-    image: 'https://placehold.co/40x40/E0E0E0/333333?text=D',
-    product: 'Dress "Floral Print"',
-    orderId: 'PO56789-0123',
-    suppliers: 'Elite Fashion Suppliers',
-    status: 'Delivered',
-    amount: 5000.00,
-    quantity: 678,
-    date: '2024-03-05'
+    product: 'iPhone 15 Pro',
+    orderId: 'ORD-9012',
+    suppliers: 'Apple Inc.',
+    status: 'Canceled',
+    amount: 999.99,
+    quantity: 10,
+    date: '2023-10-05',
+    image: 'https://placehold.co/40x40/EF4444/FFFFFF?text=IP15'
   },
   {
     id: 4,
-    image: 'https://placehold.co/40x40/E0E0E0/333333?text=H',
-    product: 'Hoodie "Cozy Comfy"',
-    orderId: 'ORD98777-4321',
-    suppliers: 'Glamour Couture Inc.',
-    status: 'Canceled',
-    amount: 5600.00,
-    quantity: 855,
-    date: '2024-02-28'
+    product: 'Samsung Galaxy S23',
+    orderId: 'ORD-3456',
+    suppliers: 'Samsung Electronics',
+    status: 'In processing',
+    amount: 899.99,
+    quantity: 8,
+    date: '2023-10-18',
+    image: 'https://placehold.co/40x40/F59E0B/FFFFFF?text=SGS23'
   },
   {
     id: 5,
-    image: 'https://placehold.co/40x40/E0E0E0/333333?text=S',
-    product: 'Skirt "A-line Midi"',
-    orderId: 'SUP45678-9012',
-    suppliers: 'Vogue Wear Ltd.',
-    status: 'In processing',
-    amount: 2600.00,
-    quantity: 544,
-    date: '2024-02-20'
+    product: 'iPad Air',
+    orderId: 'ORD-7890',
+    suppliers: 'Apple Inc.',
+    status: 'On the way',
+    amount: 599.99,
+    quantity: 12,
+    date: '2023-10-12',
+    image: 'https://placehold.co/40x40/6366F1/FFFFFF?text=IPA'
   },
   {
     id: 6,
-    image: 'https://placehold.co/40x40/E0E0E0/333333?text=B',
-    product: 'Blouse "Silk Elegance"',
-    orderId: 'PO34567-8901',
-    suppliers: 'Chic Designs International',
-    status: 'On the way',
-    amount: 1800.00,
-    quantity: 600,
-    date: '2024-02-15'
+    product: 'Microsoft Surface Pro',
+    orderId: 'ORD-2345',
+    suppliers: 'Microsoft Corporation',
+    status: 'In stock',
+    amount: 1299.99,
+    quantity: 4,
+    date: '2023-10-08',
+    image: 'https://placehold.co/40x40/8B5CF6/FFFFFF?text=MS'
   },
   {
     id: 7,
-    image: 'https://placehold.co/40x40/E0E0E0/333333?text=S',
-    product: 'Sweater "Chunky Knit"',
-    orderId: 'ORD23456-7890',
-    suppliers: 'Trendy Threads Wholesale',
-    status: 'On the way',
-    amount: 1600.00,
-    quantity: 753,
-    date: '2024-02-10'
+    product: 'Sony WH-1000XM5',
+    orderId: 'ORD-6789',
+    suppliers: 'Sony Corporation',
+    status: 'Delivered',
+    amount: 349.99,
+    quantity: 15,
+    date: '2023-10-03',
+    image: 'https://placehold.co/40x40/10B981/FFFFFF?text=SONY'
+  },
+  {
+    id: 8,
+    product: 'Logitech MX Keys',
+    orderId: 'ORD-0123',
+    suppliers: 'Logitech International',
+    status: 'Canceled',
+    amount: 99.99,
+    quantity: 20,
+    date: '2023-10-20',
+    image: 'https://placehold.co/40x40/EF4444/FFFFFF?text=LMX'
   }
 ];
 
-// Main App component
+// Create Supply Modal Component
+const CreateSupplyModal = ({ isOpen, onClose, onCreateSupply }) => {
+  const [formData, setFormData] = useState({
+    product: '',
+    orderId: '',
+    suppliers: '',
+    status: 'In stock',
+    amount: '',
+    quantity: '',
+    date: new Date().toISOString().split('T')[0],
+    image: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newSupply = {
+      id: Date.now(), // Generate a unique ID
+      product: formData.product,
+      orderId: formData.orderId,
+      suppliers: formData.suppliers,
+      status: formData.status,
+      amount: parseFloat(formData.amount),
+      quantity: parseInt(formData.quantity),
+      date: formData.date,
+      image: formData.image || `https://placehold.co/40x40/E0E0E0/333333?text=${formData.product.charAt(0)}`
+    };
+    onCreateSupply(newSupply);
+    setFormData({
+      product: '',
+      orderId: '',
+      suppliers: '',
+      status: 'In stock',
+      amount: '',
+      quantity: '',
+      date: new Date().toISOString().split('T')[0],
+      image: ''
+    });
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-gray-800">Create New Supply</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+            <input
+              type="text"
+              name="product"
+              value={formData.product}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Order ID</label>
+            <input
+              type="text"
+              name="orderId"
+              value={formData.orderId}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Supplier</label>
+            <input
+              type="text"
+              name="suppliers"
+              value={formData.suppliers}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {Object.keys(statusConfig).filter(k => k !== 'default').map(status => (
+                <option key={status} value={status}>{status}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Amount ($)</label>
+            <input
+              type="number"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              required
+              min="0"
+              step="0.01"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+            <input
+              type="number"
+              name="quantity"
+              value={formData.quantity}
+              onChange={handleChange}
+              required
+              min="1"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+            <input
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Image URL (optional)</label>
+            <input
+              type="url"
+              name="image"
+              value={formData.image}
+              onChange={handleChange}
+              placeholder="https://example.com/image.jpg"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          
+          <div className="flex justify-end space-x-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+            >
+              Create Supply
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const SuppliesPage = () => {
-  // State management
+  const setCurrentPage = () => {}; // Temporary placeholder
+  
+  useEffect(() => {
+    setCurrentPage('Supplies');
+  }, [setCurrentPage]);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItems, setSelectedItems] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
-  const [activeFilter, setActiveFilter] = useState(null);
   const [statusFilter, setStatusFilter] = useState(null);
   const [dateRange, setDateRange] = useState({ start: null, end: null });
   const [suppliesData, setSuppliesData] = useState(initialSuppliesData);
@@ -105,26 +303,23 @@ const SuppliesPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  // Show notification
   const showNotification = (message, type = 'info') => {
     setNotification({ message, type });
     setTimeout(() => setNotification({ message: '', type: '' }), 3000);
   };
 
-  // Handle checkbox change for individual items
   const handleCheckboxChange = (id) => {
     setSelectedItems(prev => 
       prev.includes(id) ? prev.filter(itemId => itemId !== id) : [...prev, id]
     );
   };
 
-  // Handle "select all" checkbox change
   const handleSelectAllChange = (e) => {
     setSelectedItems(e.target.checked ? suppliesData.map(item => item.id) : []);
   };
 
-  // Sorting functionality
   const requestSort = (key) => {
     let direction = 'ascending';
     if (sortConfig.key === key && sortConfig.direction === 'ascending') {
@@ -133,7 +328,6 @@ const SuppliesPage = () => {
     setSortConfig({ key, direction });
   };
 
-  // Format currency
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -142,11 +336,9 @@ const SuppliesPage = () => {
     }).format(amount);
   };
 
-  // Filter and sort data
   const sortedAndFilteredSupplies = useMemo(() => {
     let filteredData = [...suppliesData];
 
-    // Apply search filter
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filteredData = filteredData.filter(item =>
@@ -156,20 +348,24 @@ const SuppliesPage = () => {
       );
     }
 
-    // Apply status filter
     if (statusFilter) {
       filteredData = filteredData.filter(item => item.status === statusFilter);
     }
 
-    // Apply date range filter
     if (dateRange.start && dateRange.end) {
       filteredData = filteredData.filter(item => {
         const itemDate = new Date(item.date);
-        return itemDate >= new Date(dateRange.start) && itemDate <= new Date(dateRange.end);
+        const startDate = new Date(dateRange.start);
+        const endDate = new Date(dateRange.end);
+        
+        // Set time to beginning/end of day for proper date comparison
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+        
+        return itemDate >= startDate && itemDate <= endDate;
       });
     }
 
-    // Apply sorting
     if (sortConfig.key) {
       filteredData.sort((a, b) => {
         const aValue = a[sortConfig.key];
@@ -188,9 +384,13 @@ const SuppliesPage = () => {
     return filteredData;
   }, [suppliesData, searchTerm, statusFilter, dateRange, sortConfig]);
 
-  // Action handlers
   const handleCreateSupply = () => {
-    // In a real app, this would open a modal/form
+    setIsCreateModalOpen(true);
+  };
+
+  const handleCreateNewSupply = (newSupply) => {
+    setSuppliesData(prev => [newSupply, ...prev]);
+    setIsCreateModalOpen(false);
     showNotification('Supply created successfully!', 'success');
   };
 
@@ -220,21 +420,18 @@ const SuppliesPage = () => {
     showNotification(`Deleted ${selectedItems.length} items`, 'success');
   };
 
-  // Status filter handlers
   const handleStatusFilter = (status) => {
     setStatusFilter(status === statusFilter ? null : status);
     setIsStatusOpen(false);
     showNotification(`Filtered by status: ${status}`, 'info');
   };
 
-  // Date filter handlers
   const handleDateFilter = (range) => {
     setDateRange(range);
     setIsDateOpen(false);
     showNotification(`Filtered by date range: ${range.start} to ${range.end}`, 'info');
   };
 
-  // Predefined date ranges
   const predefinedDateRanges = [
     { label: 'Last 7 days', value: { 
       start: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
@@ -253,7 +450,6 @@ const SuppliesPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-4 font-sans">
       <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
         <header className="bg-white shadow-md rounded-xl p-4 mb-4 flex flex-col md:flex-row items-center justify-between">
           <div className="flex items-center mb-4 md:mb-0 w-full md:w-auto">
             <h1 className="text-2xl font-bold text-gray-800 mr-4">Supplies</h1>
@@ -297,7 +493,6 @@ const SuppliesPage = () => {
           </button>
         </header>
 
-        {/* Notification */}
         {notification.message && (
           <div className={`mb-4 p-3 rounded-lg ${notification.type === 'success' ? 'bg-green-100 text-green-800' : 
                           notification.type === 'warning' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'}`}>
@@ -305,15 +500,13 @@ const SuppliesPage = () => {
           </div>
         )}
 
-        {/* Filters and Actions Section */}
         <section className="bg-white shadow-md rounded-xl p-4 mb-4 flex flex-col lg:flex-row items-start lg:items-center justify-between">
-          {/* Filters */}
           <div className="flex flex-wrap gap-2 mb-4 lg:mb-0 relative">
-            {/* General Filters Button */}
             <div className="relative">
               <button
                 className={`flex items-center px-3 py-2 rounded-lg shadow-sm transition ${isFilterOpen ? 'bg-blue-200 text-blue-800' : 'bg-gray-100 hover:bg-gray-200'}`}
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
+                aria-expanded={isFilterOpen}
               >
                 <svg className="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01.293.707V19a1 1 0 01-1 1H4a1 1 0 01-1-1V7.293a1 1 0 01.293-.707L3 4z" />
@@ -332,11 +525,11 @@ const SuppliesPage = () => {
               )}
             </div>
 
-            {/* Status Filter */}
             <div className="relative">
               <button
                 className={`flex items-center px-3 py-2 rounded-lg shadow-sm transition ${statusFilter ? 'bg-blue-200 text-blue-800' : 'bg-gray-100 hover:bg-gray-200'}`}
                 onClick={() => setIsStatusOpen(!isStatusOpen)}
+                aria-expanded={isStatusOpen}
               >
                 Status
                 <svg className={`w-3 h-3 ml-1 transition-transform ${isStatusOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -358,11 +551,11 @@ const SuppliesPage = () => {
               )}
             </div>
 
-            {/* Date Filter */}
             <div className="relative">
               <button
                 className={`flex items-center px-3 py-2 rounded-lg shadow-sm transition ${dateRange.start ? 'bg-blue-200 text-blue-800' : 'bg-gray-100 hover:bg-gray-200'}`}
                 onClick={() => setIsDateOpen(!isDateOpen)}
+                aria-expanded={isDateOpen}
               >
                 <svg className="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -415,7 +608,6 @@ const SuppliesPage = () => {
               )}
             </div>
 
-            {/* Clear Filters Button */}
             {(statusFilter || dateRange.start || searchTerm) && (
               <button
                 className="flex items-center px-3 py-2 text-gray-600 hover:text-gray-800"
@@ -430,7 +622,6 @@ const SuppliesPage = () => {
             )}
           </div>
 
-          {/* Selected Items Actions */}
           {selectedItems.length > 0 && (
             <div className="flex flex-wrap items-center gap-2 text-gray-700">
               <span className="font-semibold">{selectedItems.length} Items Selected</span>
@@ -465,7 +656,6 @@ const SuppliesPage = () => {
           )}
         </section>
 
-        {/* Supplies Table Section */}
         <section className="bg-white shadow-md rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -601,6 +791,12 @@ const SuppliesPage = () => {
             </table>
           </div>
         </section>
+
+        <CreateSupplyModal 
+          isOpen={isCreateModalOpen} 
+          onClose={() => setIsCreateModalOpen(false)} 
+          onCreateSupply={handleCreateNewSupply}
+        />
       </div>
     </div>
   );

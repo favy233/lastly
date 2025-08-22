@@ -9,8 +9,8 @@ import Home from "./Pages/Home";
 import About from "./Pages/About";
 import Features from "./Pages/Features";
 import Contact from "./Pages/Contact";
-import Sidebar from "./Components/Sidebar";
 import Header from "./Components/Header";
+import Reports from "./Pages/Reports";
 import Dashboard from "./Components/Dashboard";
 import SuppliesPage from "./Pages/SuppliesPage";
 import ProductPage from "./Pages/ProductPage";
@@ -22,6 +22,7 @@ import Notification from "./Pages/Notification";
 import SignOut from "./Pages/SignOut";
 import Auth from './Components/Auth';
 import InventoryPage from './Pages/InventoryPage';
+import Demo from "./Pages/Demo"
 
 function ErrorFallback({ error, resetErrorBoundary }) {
   return (
@@ -43,17 +44,12 @@ function App() {
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
-
-  // Auth state listener with proper sign-out handling
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setAuthChecked(true);
-      
-      // Pages where we don't want to redirect
       const publicPages = ['/', '/auth', '/login', '/sign-out', '/features', '/about', '/contact'];
-      
-      // Only redirect if not authenticated AND not on a public page
+    
       if (!user && !publicPages.includes(location.pathname)) {
         navigate('/login');
       }
@@ -75,7 +71,6 @@ function App() {
 
   return (
     <div className="flex min-h-screen bg-dark-bg text-text-light font-sans overflow-hidden">
-      {!shouldHideLayout && <Sidebar />}
 
       <div className="flex-1 flex flex-col p-5 gap-5 overflow-y-auto custom-scrollbar">
         {!shouldHideLayout && <Header />}
@@ -88,8 +83,9 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/login" element={<Auth />} />
+            <Route path="/reports" element={<Reports />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/supplies" element={<SuppliesPage />} />
+            <Route path="/suppliesPage" element={<SuppliesPage />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/stockInOutPage" element={<StockInOutPage />} />
@@ -97,7 +93,8 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/sign-out" element={<SignOut />} />
             <Route path="/productPage" element={<ProductPage />} />
-            <Route path="/notifications" element={<Notification />} />
+            <Route path="/notification" element={<Notification />} />
+            <Route path="/demo" element={<Demo />} />
           </Routes>
         </ErrorBoundary>
       </div>
